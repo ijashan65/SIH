@@ -104,44 +104,71 @@ const AdminDashboard = ({ userName }: AdminDashboardProps) => {
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Pending Verifications */}
-        <Card className="shadow-soft">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <UserCheck className="h-5 w-5 text-primary" />
-              Alumni Verifications
-            </CardTitle>
-            <CardDescription>Profiles awaiting verification</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {pendingVerifications.map((user, index) => (
-              <div key={index} className="p-3 rounded-lg border border-border/50 space-y-3">
-                <div className="flex items-center space-x-3">
-                  <Avatar className="h-8 w-8">
-                    <AvatarFallback className="gradient-primary text-primary-foreground text-xs">
-                      {user.name.split(' ').map(n => n[0]).join('')}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">{user.name}</p>
-                    <p className="text-xs text-muted-foreground">{user.email}</p>
-                  </div>
-                </div>
-                <div className="text-xs">
-                  <p className="font-medium">{user.role}</p>
-                  <p className="text-muted-foreground">{user.company}</p>
-                </div>
-                <div className="flex gap-2">
-                  <Button size="sm" className="gradient-primary text-xs flex-1">Approve</Button>
-                  <Button size="sm" variant="outline" className="text-xs flex-1">Review</Button>
-                </div>
-              </div>
-            ))}
-            <Button variant="outline" className="w-full">
-              <UserCheck className="h-4 w-4 mr-2" />
-              View All Pending
-            </Button>
-          </CardContent>
-        </Card>
+{/* Add New Alumni */}
+<Card className="shadow-soft">
+  <CardHeader>
+    <CardTitle className="flex items-center gap-2">
+      <UserCheck className="h-5 w-5 text-primary" />
+      Add New Alumni
+    </CardTitle>
+    <CardDescription>Admin can manually add alumni to the platform</CardDescription>
+  </CardHeader>
+  <CardContent className="space-y-4">
+    <div className="space-y-3">
+      <input
+        type="text"
+        placeholder="Full Name"
+        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary"
+      />
+      <input
+        type="email"
+        placeholder="Email"
+        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary"
+      />
+      <input
+        type="text"
+        placeholder="LinkedIn ID / URL"
+        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary"
+      />
+      <input
+        type="text"
+        placeholder="Company / Organization"
+        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary"
+      />
+      <input
+        type="text"
+        placeholder="Position / Title"
+        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary"
+      />
+      <input
+        type="text"
+        placeholder="Program / Course"
+        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary"
+      />
+      <input
+        type="text"
+        placeholder="Batch (e.g., 2018)"
+        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary"
+      />
+      <input
+        type="text"
+        placeholder="Skills (comma separated)"
+        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary"
+      />
+      <input
+        type="file"
+        accept="image/*"
+        className="w-full text-sm text-muted-foreground"
+      />
+    </div>
+
+    <Button className="w-full gradient-primary text-white mt-2">
+      Add Alumni
+    </Button>
+  </CardContent>
+</Card>
+
+
 
         {/* Event Management */}
         <Card className="shadow-soft">

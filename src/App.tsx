@@ -14,7 +14,7 @@ import Events from "./pages/Events";
 import Jobs from "./pages/Jobs";
 import Profile from "./pages/Profile";
 import Support from "./pages/Support";
-import Mentorship from "./pages/Mentorship";
+import LectureRoom from "./pages/lectureRoom";
 import NotFound from "./pages/NotFound";
 import ManageEvents from "./pages/ManageEvents";
 import AnalyticsPage from "./pages/analytics";
@@ -23,7 +23,11 @@ import CommunicationsPage from "./pages/communicationPage";
 import SettingsPage from "./pages/settingAdmin";
 import Blog from "./pages/blogs";
 import BlogDetail from "./pages/blogsDetail";
+import Privacy from "./pages/privacy";
 import SingleAlumniProfile from "./pages/singleAlumniPage";
+import Contact from "./pages/contactUs";
+import Terms from "./pages/termOfService";
+import Connectionmodal from "./pages/connection"
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -40,15 +44,19 @@ const App = () => (
             <Route path="/events" element={<Events />} />
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/support" element={<Support />} />
-            <Route path="/mentorship" element={<Mentorship/>} />
+            <Route path="/LectureRoom" element={<LectureRoom/>} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/connections" element={<Connectionmodal />} />
             <Route path="/dashboard/student" element={<StudentDashboard />} />
             <Route path="/dashboard/alumni" element={<AlumniDashboard />} />
             <Route path="/dashboard/admin" element={<AdminDashboard />} />
             <Route path="/manage-events" element={<ManageEvents />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/bulk-import" element={<BulkImport />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/blog/:id" element={<BlogDetail />} />
             <Route path="/alumni/:id" element={<SingleAlumniProfile />} />
             <Route path="/communications" element={<CommunicationsPage />} />

@@ -55,7 +55,7 @@ const Home = () => {
       title: "Mentorship & Networking",
       description: "Get mentored by experienced alumni or become a mentor to guide the next generation of graduates.",
       color: "bg-warning/20 text-warning",
-      link: "/mentorship"
+      link: "/LectureRoom"
     },
     {
       icon: Heart,

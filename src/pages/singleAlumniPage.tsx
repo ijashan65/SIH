@@ -1,30 +1,52 @@
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Mail, Linkedin, MapPin, Building, GraduationCap, Award, ArrowLeft } from "lucide-react";
-
-// ✅ Import your mock data or fetch from API
+import { Mail, Linkedin, MapPin, Building, GraduationCap, Award, ArrowLeft, Check } from "lucide-react";
+import Navigation from "@/components/Navigation";
 import { mockAlumni } from "./AlumniDirectory";
 
 const SingleAlumniProfile = () => {
   const { id } = useParams();
-  const alumni = mockAlumni.find((a) => a.id === parseInt(id));
+  const alumni = mockAlumni.find((a) => a.id === parseInt(id!));
 
-  if (!alumni) {
-    return <p className="p-8">Alumni not found</p>;
-  }
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sentRequests, setSentRequests] = useState<number[]>([]);
 
-  // Example earned badges
+  // Load sent requests from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("sentRequests");
+    if (saved) setSentRequests(JSON.parse(saved));
+  }, []);
+
+  // Save sent requests to localStorage
+  useEffect(() => {
+    localStorage.setItem("sentRequests", JSON.stringify(sentRequests));
+  }, [sentRequests]);
+
+  if (!alumni) return <p className="p-8">Alumni not found</p>;
+
   const earnedBadges = [
     { name: "Donor", icon: Award, color: "bg-yellow-100 text-yellow-700" },
     { name: "Mentor", icon: GraduationCap, color: "bg-blue-100 text-blue-700" },
     { name: "Event Attendee", icon: Building, color: "bg-green-100 text-green-700" },
   ];
 
+  const handleConnect = () => {
+    if (!sentRequests.includes(alumni.id)) {
+      setSentRequests([...sentRequests, alumni.id]);
+    }
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => setIsModalOpen(false);
+
+  const isAlreadySent = sentRequests.includes(alumni.id);
+
   return (
     <div className="min-h-screen bg-background px-6 py-10 max-w-5xl mx-auto">
-      {/* Back Button */}
+      <Navigation />
       <Link to="/directory">
         <Button variant="ghost" className="mb-6">
           <ArrowLeft className="h-4 w-4 mr-2" /> Back to Directory
@@ -75,15 +97,35 @@ const SingleAlumniProfile = () => {
 
           {/* Actions */}
           <div className="flex space-x-4 mt-8">
-            <Button>
-              <Mail className="h-4 w-4 mr-2" /> Connect
+            <Button onClick={handleConnect} disabled={isAlreadySent} className={isAlreadySent ? "opacity-50 cursor-not-allowed" : ""}>
+              <Mail className="h-4 w-4 mr-2" /> {isAlreadySent ? "Request Sent" : "Connect"}
             </Button>
-            <Button variant="outline">
+            <Button variant="outline" onClick={() => window.open(`https://www.linkedin.com/in/${alumni.email.split('@')[0]}`, "_blank")}>
               <Linkedin className="h-4 w-4 mr-2" /> View LinkedIn
             </Button>
           </div>
         </CardContent>
       </Card>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <Card className="w-96 p-6 shadow-lg">
+            <CardContent className="flex flex-col items-center space-y-4 text-center">
+              <Check className="h-8 w-8 text-green-600" />
+              <h2 className="text-xl font-bold">{isAlreadySent ? "Request Already Sent" : "Connection Request Sent!"}</h2>
+              <p className="text-muted-foreground">
+                {isAlreadySent
+                  ? "You have already sent a request to this alumni."
+                  : "Your request has been sent. They will respond once they accept it."}
+              </p>
+              <Button onClick={closeModal} className="mt-2 gradient-primary text-white w-full">
+                OK
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 };

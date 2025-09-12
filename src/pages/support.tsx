@@ -1,11 +1,20 @@
-import React, { useState } from "react";
-import { Heart, Users, Target } from "lucide-react"; // icons
+import React, { useState, useEffect } from "react";
+import { Heart, Users, Target } from "lucide-react";
+// import Navigation from "@/components/Navigation";
 
 export default function DonationPage() {
   const [donor, setDonor] = useState({ name: "", email: "", amount: "", message: "" });
   const [donations, setDonations] = useState(2500);
   const [goal] = useState(10000);
   const [submitted, setSubmitted] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  // Responsive check
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,11 +36,23 @@ export default function DonationPage() {
 
   return (
     <div style={styles.page}>
+      {/* <Navigation /> */}
       <div style={styles.container}>
         {!submitted ? (
-          <div style={styles.grid}>
+          <div
+            style={{
+              ...styles.grid,
+              gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+            }}
+          >
             {/* Left Section */}
-            <div style={styles.left}>
+            <div
+              style={{
+                ...styles.left,
+                borderRight: isMobile ? "none" : "1px solid #e5e7eb",
+                paddingRight: isMobile ? "0" : "20px",
+              }}
+            >
               <h2 style={styles.heading}>Support Alumni Initiatives ❤️</h2>
               <p style={styles.subtext}>
                 Your donations fund scholarships, mentorship programs, and alumni events.
@@ -40,31 +61,41 @@ export default function DonationPage() {
               {/* Progress */}
               <div style={styles.progressWrapper}>
                 <div style={styles.progressTrack}>
-                  <div
-                    style={{
-                      ...styles.progressFill,
-                      width: `${progressPercent}%`,
-                    }}
-                  ></div>
+                  <div style={{ ...styles.progressFill, width: `${progressPercent}%` }}></div>
                 </div>
                 <p style={styles.progressText}>
-                  <b>${donations.toLocaleString()}</b> raised of ₹{goal.toLocaleString()} goal
+                  <b>₹{donations.toLocaleString()}</b> raised of ₹{goal.toLocaleString()} goal
                 </p>
               </div>
 
               {/* Stats */}
-              <div style={styles.stats}>
+              <div
+                style={{
+                  ...styles.stats,
+                  flexDirection: isMobile ? "column" : "row",
+                  gap: isMobile ? "12px" : "0",
+                }}
+              >
                 <div style={styles.statCard}>
                   <Heart size={22} color="#dc2626" />
-                  <p><b>${donations}</b><br />Donated</p>
+                  <p>
+                    <b>₹{donations}</b>
+                    <br />Donated
+                  </p>
                 </div>
                 <div style={styles.statCard}>
                   <Target size={22} color="#2563eb" />
-                  <p><b>${goal}</b><br />Goal</p>
+                  <p>
+                    <b>₹{goal}</b>
+                    <br />Goal
+                  </p>
                 </div>
                 <div style={styles.statCard}>
                   <Users size={22} color="#16a34a" />
-                  <p><b>145+</b><br />Supporters</p>
+                  <p>
+                    <b>145+</b>
+                    <br />Supporters
+                  </p>
                 </div>
               </div>
 
@@ -86,7 +117,7 @@ export default function DonationPage() {
             </div>
 
             {/* Right Section */}
-            <div style={styles.right}>
+            <div style={{ ...styles.right, paddingLeft: isMobile ? "0" : "20px" }}>
               <h3 style={styles.formHeading}>Make a Donation</h3>
               <form style={styles.form} onSubmit={handleDonation}>
                 <input
@@ -110,7 +141,7 @@ export default function DonationPage() {
                 <input
                   type="number"
                   name="amount"
-                  placeholder="Enter Amount ($)"
+                  placeholder="Enter Amount (₹)"
                   value={donor.amount}
                   onChange={handleChange}
                   style={styles.input}
@@ -163,16 +194,10 @@ const styles = {
   },
   grid: {
     display: "grid",
-    gridTemplateColumns: "1fr 1fr",
     gap: "30px",
   },
-  left: {
-    borderRight: "1px solid #e5e7eb",
-    paddingRight: "20px",
-  },
-  right: {
-    paddingLeft: "20px",
-  },
+  left: {},
+  right: {},
   heading: {
     fontSize: "24px",
     fontWeight: "600",
