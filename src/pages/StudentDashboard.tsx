@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Navigation from "@/components/Navigation";
+import { Link } from "react-router-dom";
 import {
   Users,
   Calendar,
@@ -160,14 +161,14 @@ const StudentDashboard = ({ userName }: StudentDashboardProps) => {
       </div>
 
       {/* Action Cards */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4"><Link to="/alumni">
         <Card className="shadow-soft hover:shadow-medium transition-smooth cursor-pointer border-primary/20">
           <CardContent className="p-6 text-center">
             <Target className="h-8 w-8 mx-auto mb-3 text-primary" />
             <h3 className="font-semibold mb-2">Find a Mentor</h3>
             <p className="text-sm text-muted-foreground">Get guidance from experienced professionals</p>
           </CardContent>
-        </Card>
+        </Card></Link>
 
         <Card className="shadow-soft hover:shadow-medium transition-smooth cursor-pointer border-accent/20">
           <CardContent className="p-6 text-center">
