@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Video, Mic ,MessageSquareMore} from "lucide-react";
 
-const LectureRoom = () => {
+const Session = () => {
   const [lectureMode, setLectureMode] = useState("video"); // video or voice
   const [lectureTitle, setLectureTitle] = useState("");
   const [lectureDescription, setLectureDescription] = useState("");
@@ -114,4 +114,4 @@ const LectureRoom = () => {
   );
 };
 
-export default LectureRoom;
+export default Session;

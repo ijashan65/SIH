@@ -30,6 +30,7 @@ import DonationFundraising from "./pages/DonationFundraising";
 import StartupFunding from "./pages/StartupFunding";
 import Contact from "./pages/contactUs";
 import Terms from "./pages/termOfService";
+import Session from "./pages/sessionCordinate";
 import Meetup from "./pages/meetup";
 import Connectionmodal from "./pages/connection"
 const queryClient = new QueryClient();
@@ -46,6 +47,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/alumni" element={<AlumniDirectory />} />
             <Route path="/DonationFundraising" element={<DonationFundraising />} />
+            <Route path="/Session" element={<Session />} />
             <Route path="/events" element={<Events />} />
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/support" element={<Support />} />

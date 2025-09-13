@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Navigation from "@/components/Navigation";
+import { Link } from "react-router-dom";
 import {
   Users,
   Calendar,
@@ -196,14 +197,17 @@ const AlumniDashboard = ({ userName }: AlumniDashboardProps) => {
             <p className="text-sm text-muted-foreground">Connect with fellow graduates</p>
           </CardContent>
         </Card>
-
-        <Card className="shadow-soft hover:shadow-medium transition-smooth cursor-pointer border-accent/20">
-          <CardContent className="p-6 text-center">
-            <TrendingUp className="h-8 w-8 mx-auto mb-3 text-accent" />
-            <h3 className="font-semibold mb-2">Update Profile</h3>
-            <p className="text-sm text-muted-foreground">Share your latest achievements</p>
-          </CardContent>
-        </Card>
+        <Link to="/Session" className="block">
+      <Card className="shadow-soft hover:shadow-medium transition-smooth cursor-pointer border-accent/20">
+        <CardContent className="p-6 text-center">
+          <TrendingUp className="h-8 w-8 mx-auto mb-3 text-accent" />
+          <h3 className="font-semibold mb-2">Mentoring Session</h3>
+          <p className="text-sm text-muted-foreground">
+            Share your latest achievements
+          </p>
+        </CardContent>
+      </Card>
+    </Link>
       </div>
     </div>
   );
