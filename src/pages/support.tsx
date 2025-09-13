@@ -1,294 +1,87 @@
-import React, { useState, useEffect } from "react";
-import { Heart, Users, Target } from "lucide-react";
-// import Navigation from "@/components/Navigation";
+import { useState } from "react";
+import Navigation from "@/components/Navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { toast, Toaster } from "react-hot-toast";
 
-export default function DonationPage() {
-  const [donor, setDonor] = useState({ name: "", email: "", amount: "", message: "" });
-  const [donations, setDonations] = useState(2500);
-  const [goal] = useState(10000);
-  const [submitted, setSubmitted] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+const Donation = () => {
+  const [donationAmount, setDonationAmount] = useState("");
+  const [donorLevel, setDonorLevel] = useState("");
 
-  // Responsive check
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setDonor({ ...donor, [name]: value });
-  };
-
-  const handleDonation = (e) => {
-    e.preventDefault();
-    if (!donor.name || !donor.email || !donor.amount) {
-      alert("Please fill all required fields!");
+  const handleDonate = () => {
+    const amount = parseFloat(donationAmount);
+    if (!amount || amount <= 0) {
+      toast.error("Please enter a valid donation amount");
+      setDonorLevel("");
       return;
     }
-    setDonations(donations + parseInt(donor.amount));
-    setSubmitted(true);
-    setDonor({ name: "", email: "", amount: "", message: "" });
+
+    // Determine donor level
+    let level = "";
+    if (amount >= 100000) level = "Gold";
+    else if (amount >= 5000) level = "Silver";
+    else if (amount >= 2000) level = "Bronze";
+    else level = "Supporter";
+
+    setDonorLevel(level);
+    toast.success(`Thank you for donating ₹${amount}! You earned the ${level} badge!`);
+    setDonationAmount("");
   };
 
-  const progressPercent = Math.min((donations / goal) * 100, 100);
-
   return (
-    <div style={styles.page}>
-      {/* <Navigation /> */}
-      <div style={styles.container}>
-        {!submitted ? (
-          <div
-            style={{
-              ...styles.grid,
-              gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-            }}
-          >
-            {/* Left Section */}
-            <div
-              style={{
-                ...styles.left,
-                borderRight: isMobile ? "none" : "1px solid #e5e7eb",
-                paddingRight: isMobile ? "0" : "20px",
-              }}
-            >
-              <h2 style={styles.heading}>Support Alumni Initiatives ❤️</h2>
-              <p style={styles.subtext}>
-                Your donations fund scholarships, mentorship programs, and alumni events.
-              </p>
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      <Toaster position="top-right" />
 
-              {/* Progress */}
-              <div style={styles.progressWrapper}>
-                <div style={styles.progressTrack}>
-                  <div style={{ ...styles.progressFill, width: `${progressPercent}%` }}></div>
-                </div>
-                <p style={styles.progressText}>
-                  <b>₹{donations.toLocaleString()}</b> raised of ₹{goal.toLocaleString()} goal
-                </p>
-              </div>
+      <div className="max-w-lg mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col gap-8">
+        <h1 className="text-3xl font-bold text-primary text-center">Support Our Alumni Network</h1>
+        <p className="text-muted-foreground text-center">
+          Your donation helps support alumni initiatives, networking events, and community programs.
+        </p>
 
-              {/* Stats */}
-              <div
-                style={{
-                  ...styles.stats,
-                  flexDirection: isMobile ? "column" : "row",
-                  gap: isMobile ? "12px" : "0",
-                }}
-              >
-                <div style={styles.statCard}>
-                  <Heart size={22} color="#dc2626" />
-                  <p>
-                    <b>₹{donations}</b>
-                    <br />Donated
-                  </p>
-                </div>
-                <div style={styles.statCard}>
-                  <Target size={22} color="#2563eb" />
-                  <p>
-                    <b>₹{goal}</b>
-                    <br />Goal
-                  </p>
-                </div>
-                <div style={styles.statCard}>
-                  <Users size={22} color="#16a34a" />
-                  <p>
-                    <b>145+</b>
-                    <br />Supporters
-                  </p>
-                </div>
-              </div>
+        <div className="flex flex-col gap-4">
+          <Input
+            type="number"
+            placeholder="Enter donation amount in ₹"
+            value={donationAmount}
+            onChange={(e) => setDonationAmount(e.target.value)}
+          />
+          <Button className="w-full py-3 text-lg font-medium" onClick={handleDonate}>
+            Donate Now
+          </Button>
+        </div>
 
-              {/* Tiered Options */}
-              <div style={styles.tierWrapper}>
-                <div style={{ ...styles.tierCard, borderLeft: "4px solid gold" }}>
-                  <h4>🥇 Gold Supporter</h4>
-                  <p>₹20000+ contribution</p>
-                </div>
-                <div style={{ ...styles.tierCard, borderLeft: "4px solid silver" }}>
-                  <h4>🥈 Silver Supporter</h4>
-                  <p>₹10000+ contribution</p>
-                </div>
-                <div style={{ ...styles.tierCard, borderLeft: "4px solid #cd7f32" }}>
-                  <h4>🥉 Bronze Supporter</h4>
-                  <p>₹500+ contribution</p>
-                </div>
-              </div>
+        {/* Donor Badge */}
+        {donorLevel && (
+          <div className="text-center mt-6">
+            <div className={`inline-block px-6 py-3 rounded-full text-white font-semibold ${
+              donorLevel === "Gold" ? "bg-yellow-400" :
+              donorLevel === "Silver" ? "bg-gray-400" :
+              donorLevel === "Bronze" ? "bg-orange-500" :
+              "bg-green-500"
+            }`}>
+              {donorLevel} Donor
             </div>
-
-            {/* Right Section */}
-            <div style={{ ...styles.right, paddingLeft: isMobile ? "0" : "20px" }}>
-              <h3 style={styles.formHeading}>Make a Donation</h3>
-              <form style={styles.form} onSubmit={handleDonation}>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Your Name"
-                  value={donor.name}
-                  onChange={handleChange}
-                  style={styles.input}
-                  required
-                />
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Your Email"
-                  value={donor.email}
-                  onChange={handleChange}
-                  style={styles.input}
-                  required
-                />
-                <input
-                  type="number"
-                  name="amount"
-                  placeholder="Enter Amount (₹)"
-                  value={donor.amount}
-                  onChange={handleChange}
-                  style={styles.input}
-                  required
-                />
-                <textarea
-                  name="message"
-                  placeholder="Message (optional)"
-                  value={donor.message}
-                  onChange={handleChange}
-                  style={styles.textarea}
-                ></textarea>
-
-                <button type="submit" style={styles.donateBtn}>
-                  💙 Donate Now
-                </button>
-              </form>
-            </div>
-          </div>
-        ) : (
-          <div style={styles.thankYou}>
-            <h3>🎉 Thank You for Your Support!</h3>
-            <p>Your contribution makes a big difference in alumni initiatives.</p>
-            <button onClick={() => setSubmitted(false)} style={styles.donateBtn}>
-              Make Another Donation
-            </button>
+            <p className="text-muted-foreground mt-2">
+              {donorLevel === "Supporter" 
+                ? "Thank you for supporting our alumni network!" 
+                : `Congratulations! You are a ${donorLevel} donor!`}
+            </p>
           </div>
         )}
+
+        {/* Donation Milestones Info */}
+        <div className="mt-8 p-6 border rounded-lg bg-card text-card-foreground space-y-3">
+          <h2 className="text-xl font-semibold">Donation Milestones</h2>
+          <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+            <li>₹2,000+ → Bronze Donor</li>
+            <li>₹5,000+ → Silver Donor</li>
+            <li>₹1,00,000+ → Gold Donor</li>
+          </ul>
+        </div>
       </div>
     </div>
   );
-}
-
-const styles = {
-  page: {
-    backgroundColor: "#f9fafb",
-    minHeight: "100vh",
-    padding: "40px 20px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "flex-start",
-  },
-  container: {
-    background: "#fff",
-    padding: "30px",
-    borderRadius: "12px",
-    boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-    width: "100%",
-    maxWidth: "1100px",
-  },
-  grid: {
-    display: "grid",
-    gap: "30px",
-  },
-  left: {},
-  right: {},
-  heading: {
-    fontSize: "24px",
-    fontWeight: "600",
-    marginBottom: "10px",
-    color: "#111827",
-  },
-  subtext: {
-    fontSize: "14px",
-    color: "#6b7280",
-    marginBottom: "20px",
-  },
-  progressWrapper: {
-    marginBottom: "20px",
-  },
-  progressTrack: {
-    height: "16px",
-    background: "#e5e7eb",
-    borderRadius: "8px",
-    overflow: "hidden",
-  },
-  progressFill: {
-    height: "100%",
-    background: "linear-gradient(to right, #2563eb, #3b82f6)",
-  },
-  progressText: {
-    fontSize: "13px",
-    marginTop: "6px",
-    color: "#374151",
-  },
-  stats: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginBottom: "20px",
-  },
-  statCard: {
-    background: "#f3f4f6",
-    padding: "12px 16px",
-    borderRadius: "8px",
-    textAlign: "center",
-    flex: "1",
-    margin: "0 5px",
-    fontSize: "13px",
-    fontWeight: "500",
-  },
-  tierWrapper: {
-    display: "grid",
-    gap: "12px",
-  },
-  tierCard: {
-    background: "#f9fafb",
-    padding: "12px 16px",
-    borderRadius: "8px",
-    boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
-  },
-  formHeading: {
-    fontSize: "20px",
-    fontWeight: "600",
-    marginBottom: "20px",
-    color: "#111827",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "12px",
-  },
-  input: {
-    padding: "12px",
-    borderRadius: "6px",
-    border: "1px solid #d1d5db",
-    fontSize: "14px",
-  },
-  textarea: {
-    padding: "12px",
-    borderRadius: "6px",
-    border: "1px solid #d1d5db",
-    fontSize: "14px",
-    minHeight: "80px",
-  },
-  donateBtn: {
-    padding: "12px",
-    borderRadius: "6px",
-    border: "none",
-    background: "#2563eb",
-    color: "white",
-    fontWeight: "600",
-    cursor: "pointer",
-    marginTop: "10px",
-    fontSize: "15px",
-    transition: "0.3s",
-  },
-  thankYou: {
-    textAlign: "center",
-  },
 };
+
+export default Donation;

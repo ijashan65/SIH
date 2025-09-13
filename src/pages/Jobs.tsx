@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Navigation from "@/components/Navigation";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Briefcase, MapPin, Clock, DollarSign, Building, Share2, UserCheck, Search } from "lucide-react";
 import { toast, Toaster } from "react-hot-toast";
 
+// Mock job data with alumni info
 const mockJobs = [
   {
     id: 1,
@@ -19,7 +20,9 @@ const mockJobs = [
     salary_max: 200000,
     posted_date: "2024-01-10",
     description: "Join our world-class engineering team building next-generation products.",
-    requirements: ["React", "Node.js", "TypeScript", "AWS"]
+    requirements: ["React", "Node.js", "TypeScript", "AWS"],
+    posted_by: "John Doe",
+    batch: "2018"
   },
   {
     id: 2,
@@ -31,7 +34,9 @@ const mockJobs = [
     salary_max: 160000,
     posted_date: "2024-01-08",
     description: "Lead product strategy and execution for enterprise solutions.",
-    requirements: ["Product Strategy", "Analytics", "Leadership", "B2B"]
+    requirements: ["Product Strategy", "Analytics", "Leadership", "B2B"],
+    posted_by: "Priya Sharma",
+    batch: "2016"
   },
   {
     id: 3,
@@ -41,7 +46,9 @@ const mockJobs = [
     job_type: "internship",
     posted_date: "2024-01-12",
     description: "Gain hands-on experience in digital marketing and brand strategy.",
-    requirements: ["Digital Marketing", "Social Media", "Content Creation"]
+    requirements: ["Digital Marketing", "Social Media", "Content Creation"],
+    posted_by: "Rahul Verma",
+    batch: "2021"
   }
 ];
 
@@ -50,13 +57,16 @@ const Opportunities = () => {
   const [appliedJobs, setAppliedJobs] = useState<number[]>([]);
   const [savedJobs, setSavedJobs] = useState<number[]>([]);
   const [referenceRequests, setReferenceRequests] = useState<number[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  // Filter jobs by type
-  const filteredJobs = mockJobs.filter(job => 
-    jobTypeFilter === "all" ? true : job.job_type === jobTypeFilter
+  // Filter jobs by type and search term
+  const filteredJobs = mockJobs.filter(job =>
+    (jobTypeFilter === "all" ? true : job.job_type === jobTypeFilter) &&
+    (job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+     job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+     job.requirements.join(" ").toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
-  // Handle button actions
   const handleApply = (jobId: number) => {
     if (!appliedJobs.includes(jobId)) {
       setAppliedJobs([...appliedJobs, jobId]);
@@ -94,38 +104,38 @@ const Opportunities = () => {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-primary mb-2">Career Opportunities</h1>
           <p className="text-muted-foreground">
-            Discover job openings and internships from our alumni network
+            Discover job openings and internships posted by our alumni network.
           </p>
         </div>
 
-        {/* Filters */}
+        {/* Search & Filter */}
         <Card className="mb-8">
-          <CardContent className="p-6">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input placeholder="Search jobs by title, company, or skills..." className="pl-10" />
-              </div>
-
-              <div className="flex gap-4">
-                <Select onValueChange={setJobTypeFilter}>
-                  <SelectTrigger className="w-full sm:w-[150px]">
-                    <SelectValue placeholder="Job Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Types</SelectItem>
-                    <SelectItem value="full-time">Full-time</SelectItem>
-                    <SelectItem value="part-time">Part-time</SelectItem>
-                    <SelectItem value="contract">Contract</SelectItem>
-                    <SelectItem value="internship">Internship</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+          <CardContent className="p-6 flex flex-col sm:flex-row gap-4">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search jobs by title, company, skills..."
+                className="pl-10"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
+            <Select onValueChange={setJobTypeFilter}>
+              <SelectTrigger className="w-full sm:w-[150px]">
+                <SelectValue placeholder="Job Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Types</SelectItem>
+                <SelectItem value="full-time">Full-time</SelectItem>
+                <SelectItem value="part-time">Part-time</SelectItem>
+                <SelectItem value="contract">Contract</SelectItem>
+                <SelectItem value="internship">Internship</SelectItem>
+              </SelectContent>
+            </Select>
           </CardContent>
         </Card>
 
-        {/* Results */}
+        {/* Results Count */}
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-card-foreground">
             {filteredJobs.length} Opportunities Found
@@ -140,7 +150,7 @@ const Opportunities = () => {
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                   <div className="flex-1">
                     <CardTitle className="text-xl text-card-foreground mb-2">{job.title}</CardTitle>
-                    <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-muted-foreground">
                       <div className="flex items-center">
                         <Building className="h-4 w-4 mr-1" /> {job.company}
                       </div>
@@ -150,9 +160,12 @@ const Opportunities = () => {
                       <div className="flex items-center">
                         <Clock className="h-4 w-4 mr-1" /> {new Date(job.posted_date).toLocaleDateString()}
                       </div>
+                      <div className="flex items-center italic text-xs">
+                        Posted by <span className="font-semibold ml-1">{job.posted_by}</span> ({job.batch} batch)
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 mt-2 sm:mt-0">
                     <Badge variant={job.job_type === "full-time" ? "default" : job.job_type === "internship" ? "secondary" : "outline"}>
                       {job.job_type.replace("-", " ").replace(/\b\w/g, l => l.toUpperCase())}
                     </Badge>
@@ -166,32 +179,29 @@ const Opportunities = () => {
                 </div>
               </CardHeader>
 
-              <CardContent className="pt-0">
-                <div className="space-y-4">
-                  <p className="text-muted-foreground leading-relaxed">{job.description}</p>
-
-                  <div>
-                    <h4 className="text-sm font-medium text-card-foreground mb-2">Required Skills & Experience</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {job.requirements.map((req, idx) => (
-                        <Badge key={idx} variant="secondary" className="text-xs">{req}</Badge>
-                      ))}
-                    </div>
+              <CardContent className="pt-0 space-y-4">
+                <p className="text-muted-foreground leading-relaxed">{job.description}</p>
+                <div>
+                  <h4 className="text-sm font-medium text-card-foreground mb-2">Required Skills & Experience</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {job.requirements.map((req, idx) => (
+                      <Badge key={idx} variant="secondary" className="text-xs">{req}</Badge>
+                    ))}
                   </div>
+                </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                    <Button className="flex-1" onClick={() => handleApply(job.id)}>
-                      {appliedJobs.includes(job.id) ? "Applied" : "Apply Now"}
-                    </Button>
-                    <Button variant="outline" onClick={() => handleSave(job.id)}>Save Job</Button>
-                    <Button variant="outline" onClick={() => handleReferenceRequest(job.id)}>
-                      <UserCheck className="h-4 w-4 mr-2" /> Request Reference
-                    </Button>
-                    <Button variant="outline">
-                      <Share2 className="h-4 w-4 mr-2" /> Share
-                    </Button>
-                  </div>
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                  <Button className="flex-1" onClick={() => handleApply(job.id)}>
+                    {appliedJobs.includes(job.id) ? "Applied" : "Apply Now"}
+                  </Button>
+                  <Button variant="outline" onClick={() => handleSave(job.id)}>Save Job</Button>
+                  <Button variant="outline" onClick={() => handleReferenceRequest(job.id)}>
+                    <UserCheck className="h-4 w-4 mr-2" /> Request Reference
+                  </Button>
+                  <Button variant="outline">
+                    <Share2 className="h-4 w-4 mr-2" /> Share
+                  </Button>
                 </div>
               </CardContent>
             </Card>

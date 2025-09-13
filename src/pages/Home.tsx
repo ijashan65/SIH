@@ -62,7 +62,7 @@ const Home = () => {
       title: "Donation & Fundraising",
       description: "Support your alma mater through donations, scholarships, and contributing to institutional growth.",
       color: "bg-destructive/20 text-destructive",
-      link : "/support"
+      link : "/DonationFundraising"
     },
     {
       icon: Network,

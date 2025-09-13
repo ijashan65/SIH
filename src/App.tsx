@@ -26,6 +26,8 @@ import Blog from "./pages/blogs";
 import BlogDetail from "./pages/blogsDetail";
 import Privacy from "./pages/privacy";
 import SingleAlumniProfile from "./pages/singleAlumniPage";
+import DonationFundraising from "./pages/DonationFundraising";
+import StartupFunding from "./pages/StartupFunding";
 import Contact from "./pages/contactUs";
 import Terms from "./pages/termOfService";
 import Meetup from "./pages/meetup";
@@ -43,6 +45,7 @@ const App = () => (
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/alumni" element={<AlumniDirectory />} />
+            <Route path="/DonationFundraising" element={<DonationFundraising />} />
             <Route path="/events" element={<Events />} />
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/support" element={<Support />} />
@@ -51,6 +54,7 @@ const App = () => (
             <Route path="/meetup" element={<Meetup />} />
             <Route path="/connections" element={<Connectionmodal />} />
             <Route path="/eventsMeetup" element={<EventsMeetup />} />
+            <Route path="/StartupFunding" element={<StartupFunding />} />
             <Route path="/dashboard/student" element={<StudentDashboard />} />
             <Route path="/dashboard/alumni" element={<AlumniDashboard />} />
             <Route path="/dashboard/admin" element={<AdminDashboard />} />

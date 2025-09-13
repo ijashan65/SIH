@@ -19,7 +19,7 @@ const Navigation = () => {
   const navigate = useNavigate();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const role = localStorage.getItem("role");
+  const role = localStorage.getItem("role"); // "admin" or "alumni"
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -48,7 +48,6 @@ const Navigation = () => {
   return (
     <nav className="sticky top-0 z-50 bg-white/70 dark:bg-gray-900/70 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-md transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
@@ -95,12 +94,10 @@ const Navigation = () => {
           </div>
 
           {/* Auth Buttons (Desktop) */}
-          <div
-            className="hidden md:flex items-center space-x-4 relative"
-            ref={dropdownRef}
-          >
+          <div className="hidden md:flex items-center space-x-4 relative" ref={dropdownRef}>
             {role ? (
-              <>
+              <div className="relative">
+                {/* Avatar Button */}
                 <Button
                   className="rounded-full w-10 h-10 flex items-center justify-center font-bold bg-primary text-white hover:scale-105 transition-transform shadow-md"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -108,8 +105,25 @@ const Navigation = () => {
                   {role === "admin" ? "AD" : role.charAt(0).toUpperCase()}
                 </Button>
 
+                {/* Dropdown */}
                 {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg animate-fadeIn">
+                  <div className="absolute right-0 top-full mt-2 w-44 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg animate-fadeIn">
+                    {/* Dashboard */}
+                    <Link
+                       to={
+                          role === "admin"
+                          ? "/dashboard/admin"
+                         : role === "alumni"
+                    ? "/dashboard/alumni"
+                       : "/dashboard/student"
+                               }
+                      className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2 text-gray-700 dark:text-gray-200"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      <GraduationCap className="h-4 w-4" /> Dashboard
+                    </Link>
+
+                    {/* Profile */}
                     <Link
                       to="/profile"
                       className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2 text-gray-700 dark:text-gray-200"
@@ -117,6 +131,8 @@ const Navigation = () => {
                     >
                       <User className="h-4 w-4" /> Profile
                     </Link>
+
+                    {/* Logout */}
                     <button
                       onClick={handleLogout}
                       className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
@@ -125,7 +141,7 @@ const Navigation = () => {
                     </button>
                   </div>
                 )}
-              </>
+              </div>
             ) : (
               <Button
                 variant="hero"
@@ -170,13 +186,6 @@ const Navigation = () => {
                   >
                     <Icon className="h-4 w-4" />
                     <span>{item.label}</span>
-
-                    {/* underline animation */}
-                    <span
-                      className={`absolute bottom-0 left-0 h-0.5 bg-primary rounded-full transition-all duration-300 ${
-                        isActive ? "w-full" : "w-0 group-hover:w-full"
-                      }`}
-                    ></span>
                   </Link>
                 );
               })}
@@ -185,6 +194,15 @@ const Navigation = () => {
               <div className="pt-4 space-y-2">
                 {role ? (
                   <>
+                    {/* Dashboard */}
+                    <Link
+                      to={role === "admin" ? "/dashboard/admin" : "/dashboard/alumni"}
+                      className="block px-4 py-2 text-sm rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-primary hover:text-white"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                    {/* Profile */}
                     <Link
                       to="/profile"
                       className="block px-4 py-2 text-sm rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-primary hover:text-white"
@@ -192,6 +210,7 @@ const Navigation = () => {
                     >
                       Profile
                     </Link>
+                    {/* Logout */}
                     <Button
                       variant="outline"
                       className="w-full"
