@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { GraduationCap, Mail, Lock, User } from "lucide-react";
 import studentsImage from "@/assets/students-studying.jpg";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [loginData, setLoginData] = useState({
@@ -31,16 +32,21 @@ const Login = () => {
     //   // Redirect to admin dashboard
     //   window.location.href = '/dashboard/admin';
     // }
-    if (role === "student") {
+    
+
+const navigate = useNavigate();
+
+if (role === "student") {
   localStorage.setItem("role", "student");
-  window.location.href = "/dashboard/student";
+  navigate("/dashboard/student");
 } else if (role === "alumni") {
   localStorage.setItem("role", "alumni");
-  window.location.href = "/dashboard/alumni";
+  navigate("/dashboard/alumni");
 } else if (role === "admin") {
   localStorage.setItem("role", "admin");
-  window.location.href = "/dashboard/admin";
+  navigate("/dashboard/admin");
 }
+
     
     console.log("Login attempt:", loginData);
   };
