@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,6 +9,7 @@ import { GraduationCap, Mail, Lock, User } from "lucide-react";
 import studentsImage from "@/assets/students-studying.jpg";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
     uniqueId: "",
     password: "",
@@ -17,31 +18,17 @@ const Login = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Simulate role-based redirect based on demo data
+
     const role = loginData.role;
-    
-    // if (role === 'student') {
-    //   // Redirect to student dashboard
-    //   window.location.href = '/dashboard/student';
-    // } else if (role === 'alumni') {
-    //   // Redirect to alumni dashboard  
-    //   window.location.href = '/dashboard/alumni';
-    // } else if (role === 'admin') {
-    //   // Redirect to admin dashboard
-    //   window.location.href = '/dashboard/admin';
-    // }
-    if (role === "student") {
-  localStorage.setItem("role", "student");
-  window.location.href = "/dashboard/student";
-} else if (role === "alumni") {
-  localStorage.setItem("role", "alumni");
-  window.location.href = "/dashboard/alumni";
-} else if (role === "admin") {
-  localStorage.setItem("role", "admin");
-  window.location.href = "/dashboard/admin";
-}
-    
+
+    // Save role in localStorage
+    localStorage.setItem("role", role);
+
+    // Navigate to dashboard without full reload
+    if (role === "student") navigate("/dashboard/student");
+    else if (role === "alumni") navigate("/dashboard/alumni");
+    else if (role === "admin") navigate("/dashboard/admin");
+
     console.log("Login attempt:", loginData);
   };
 
@@ -55,8 +42,8 @@ const Login = () => {
     <div className="min-h-screen bg-gradient-to-br from-primary-light via-background to-accent-light">
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-8 items-center">
-          
-          {/* Left Side - Image & Info */}
+
+          {/* Left Side - Image */}
           <div className="hidden lg:block">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img 
@@ -109,15 +96,15 @@ const Login = () => {
               <CardContent className="space-y-6">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="Rollno.">Unique No.</Label>
+                    <Label htmlFor="uniqueId">Unique No.</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
-                        id="number"
-                        type="RollNo/EmployeeID"
+                        id="uniqueId"
+                        type="text"
                         placeholder="Enter your rollno./employee id"
                         value={loginData.uniqueId}
-                        onChange={(e) => setLoginData(prev => ({ ...prev, email: e.target.value }))}
+                        onChange={(e) => setLoginData(prev => ({ ...prev, uniqueId: e.target.value }))}
                         className="pl-10"
                         required
                       />
