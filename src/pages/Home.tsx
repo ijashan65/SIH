@@ -16,15 +16,15 @@ import {
   HandHeart,
   Building
 } from "lucide-react";
-import heroCampus from "@/assets/hero-campus.jpg";
+import heroCampus from "@/assets/cgcLandran.jpg";
 import alumniNetworking from "@/assets/alumni-networking.jpg";
 import { link } from "fs";
 
 const Home = () => {
   const stats = [
-    { number: "10,000+", label: "Active Alumni", icon: Users },
-    { number: "500+", label: "Partner Companies", icon: Building },
-    { number: "2,000+", label: "Success Stories", icon: Award },
+    { number: "1000+", label: "Active Alumni", icon: Users },
+    { number: "100+", label: "Career Opportunities ", icon: Building },
+    { number: "20+", label: "Student-Alumni Connections", icon: Award },
     { number: "50+", label: "Countries Reached", icon: MapPin },
   ];
 
@@ -41,7 +41,7 @@ const Home = () => {
       title: "Events & Meetups",
       description: "Join exclusive alumni events, reunions, webinars, and networking sessions to build meaningful connections.",
       color: "bg-accent-light text-accent",
-      link: "/events"
+      link: "/eventsMeetup"
     },
     {
       icon: Briefcase,

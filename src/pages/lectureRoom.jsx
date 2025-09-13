@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Video, Mic } from "lucide-react";
+import { Video, Mic ,MessageSquareMore} from "lucide-react";
 
 const LectureRoom = () => {
   const [lectureMode, setLectureMode] = useState("video"); // video or voice
@@ -11,7 +11,7 @@ const LectureRoom = () => {
 
   const handleStartLecture = () => {
     if (!lectureTitle) {
-      alert("Please enter a lecture title");
+      alert("Please enter  Session Mentorship");
       return;
     }
     setStarted(true);
@@ -19,7 +19,7 @@ const LectureRoom = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-start py-12 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-4xl font-extrabold text-gray-900 mb-8">Start a Lecture</h1>
+      <h1 className="text-4xl font-extrabold text-gray-900 mb-8">Start a Session</h1>
 
       <Card className="w-full max-w-3xl shadow-lg rounded-2xl border-0">
         <CardContent className="p-8 space-y-6">
@@ -27,13 +27,13 @@ const LectureRoom = () => {
             <>
               {/* Lecture Details */}
               <div>
-                <label className="block text-gray-700 font-medium mb-1">Lecture Title</label>
+                <label className="block text-gray-700 font-medium mb-1"> Session Mentorship Title</label>
                 <input
                   type="text"
                   value={lectureTitle}
                   onChange={(e) => setLectureTitle(e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="Enter lecture title"
+                  placeholder="Enter Session title"
                 />
               </div>
 
@@ -64,18 +64,25 @@ const LectureRoom = () => {
                 >
                   <Mic className="h-4 w-4" /> Voice
                 </Button>
+                <Button
+                  variant={lectureMode === "voice" ? "default" : "outline"}
+                  onClick={() => setLectureMode("chat ")}
+                  className="flex items-center space-x-2"
+                >
+                  <Mic className="h-4 w-4" /> Chat
+                </Button>
               </div>
 
               <Button
                 onClick={handleStartLecture}
                 className="w-full bg-indigo-600 text-white hover:bg-indigo-700 transition duration-300"
               >
-                Start Lecture
+                Start Session
               </Button>
             </>
           ) : (
             <div className="text-center space-y-4">
-              <h2 className="text-2xl font-bold text-gray-900">Lecture in Progress</h2>
+              <h2 className="text-2xl font-bold text-gray-900">session in Progress</h2>
               <p className="text-gray-700">
                 Mode: <span className="font-medium">{lectureMode.toUpperCase()}</span>
               </p>
@@ -91,7 +98,7 @@ const LectureRoom = () => {
                   className="bg-red-600 text-white hover:bg-red-700 transition duration-300"
                   onClick={() => setStarted(false)}
                 >
-                  End Lecture
+                  End Session
                 </Button>
               </div>
 

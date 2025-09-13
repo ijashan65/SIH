@@ -240,7 +240,7 @@ const AlumniDirectory = () => {
           <div>
             <h1 className="text-3xl font-bold text-primary">Alumni Directory</h1>
             <p className="text-muted-foreground">
-              Connect with {mockAlumni.length}+ verified alumni worldwide
+              Connect with {mockAlumni.length}+ verified alumni worldwide.<br/>Find alumni by batch, program, or location and grow your professional network
             </p>
           </div>
         </div>

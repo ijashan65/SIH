@@ -13,7 +13,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Events from "./pages/Events";
 import Jobs from "./pages/Jobs";
 import Profile from "./pages/Profile";
-import Support from "./pages/Support";
+import Support from "./pages/support";
+import EventsMeetup from "./pages/EventsMeetup";
 import LectureRoom from "./pages/lectureRoom";
 import NotFound from "./pages/NotFound";
 import ManageEvents from "./pages/ManageEvents";
@@ -27,6 +28,7 @@ import Privacy from "./pages/privacy";
 import SingleAlumniProfile from "./pages/singleAlumniPage";
 import Contact from "./pages/contactUs";
 import Terms from "./pages/termOfService";
+import Meetup from "./pages/meetup";
 import Connectionmodal from "./pages/connection"
 const queryClient = new QueryClient();
 
@@ -46,7 +48,9 @@ const App = () => (
             <Route path="/support" element={<Support />} />
             <Route path="/LectureRoom" element={<LectureRoom/>} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/meetup" element={<Meetup />} />
             <Route path="/connections" element={<Connectionmodal />} />
+            <Route path="/eventsMeetup" element={<EventsMeetup />} />
             <Route path="/dashboard/student" element={<StudentDashboard />} />
             <Route path="/dashboard/alumni" element={<AlumniDashboard />} />
             <Route path="/dashboard/admin" element={<AdminDashboard />} />
